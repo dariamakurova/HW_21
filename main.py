@@ -13,7 +13,7 @@ class MyServer(BaseHTTPRequestHandler):
 
     def __get_contacts(self):
         try:
-            with open("contacts.html", "r", encoding="utf-8") as f:
+            with open("catalog/templates/catalog/contacts.html", "r", encoding="utf-8") as f:
                 return f.read()
         except Exception as e:
             return f"""
