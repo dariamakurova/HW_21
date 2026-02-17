@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 
@@ -11,10 +13,13 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
         ordering = ["name"]
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name="Наименование")
-    description = models.CharField(max_length=150, verbose_name="Описание")
+    description = models.CharField(max_length=255, verbose_name="Описание")
     photo = models.ImageField(
         upload_to="products/photo", blank=True, null=True, verbose_name="Изображение"
     )
@@ -24,10 +29,11 @@ class Product(models.Model):
         related_name="products",
         null=True,
         blank=True,
+        verbose_name="Категория"
     )
     price = models.IntegerField(verbose_name="Цена за покупку")
-    creation_at = models.DateField(verbose_name="Дата создания")
-    updated_at = models.DateField(verbose_name="Дата последнего изменения")
+    created_at = models.DateField(verbose_name="Дата создания", auto_now=True)
+    updated_at = models.DateField(verbose_name="Дата последнего изменения", auto_now=True)
 
     class Meta:
         verbose_name = "Продукт"
