@@ -1,0 +1,27 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+      <div class="card shadow-sm">
+        {% if product.photo %}
+          <img src="{{ product.photo|media_filter }}"
+             class="card-img-top"
+             alt="{{ product.name }}">
+        {% else %}
+          <div class="thumb d-flex align-items-center justify-content-center">
+            <i class="bi bi-image fs-1 text-secondary"></i>
+          </div>
+        {% endif %}
+        <div class="card-body">
+          <h4 class="card-text"> {{ product.name }} </h4>
+          <p class="card-text">
+            {{ product.description }}
+          </p>
+          <p class="card-text">
+            Категория: {{ product.category }}
+          </p>
+            <p class="card-text">
+            Цена: от {{ product.price }}
+          </p>
+        </div>
+      </div>
+{% endblock %}
