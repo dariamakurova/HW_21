@@ -30,6 +30,11 @@
             <p class="card-text">
             Изменен: {{ product.updated_at }}
           </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group card-actions" role="group">
+              <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:catalog' %}">Назад в каталог</a>
+            </div>
+          </div>
 
         </div>
       </div>
