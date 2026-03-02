@@ -1,5 +1,8 @@
+from gettext import Catalog
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.views.generic import ListView
 
 from catalog.models import Product
 
@@ -21,6 +24,13 @@ def contacts(request):
 
 def category_1(request):
     return render(request, 'catalog/category_1.html')
+
+class ProductListView(ListView):
+    model = Product
+
+
+
+
 
 def catalog(request):
     products = Product.objects.all()
