@@ -2,7 +2,7 @@ from gettext import Catalog
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from catalog.models import Product
 
@@ -25,22 +25,10 @@ def contacts(request):
 def category_1(request):
     return render(request, 'catalog/category_1.html')
 
+
 class ProductListView(ListView):
     model = Product
 
 
-
-
-
-def catalog(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, 'catalog/catalog.html', context)
-
-def index(request):
-    return render(request, 'catalog/base.html')
-
-def product_info(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product" : product}
-    return render(request, 'catalog/product_info.html', context)
+class ProductDetailView(DetailView):
+    model = Product
