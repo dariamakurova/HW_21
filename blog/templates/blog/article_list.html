@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+  <div class="text-center page-title">
+       <a type="button" class="btn btn-primary" href="{% url 'blog:article_create' %}">Новая статья</a>
+  </div>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
+
+              {% for article in object_list %}
+              <div class="col">
+                <div class="card shadow-sm">
+                  {% if article.preview %}
+                    <img src="{{ article.preview.url }}"
+                          class="card-img-top"
+                          alt="{{ article.title }}">
+                  {% else %}
+                <div class="thumb d-flex align-items-center justify-content-center">
+                  <i class="bi bi-image fs-1 text-secondary"></i>
+                </div>
+                  {% endif %}
+
+                  <div class="card-body">
+                    <h4 class="card-text"> {{ article.title }} </h4>
+                    <p class="card-text">
+                      {{ article.body | truncatechars:100 }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group card-actions" role="group">
+                        <a type="button" class="btn btn-outline-secondary" href="{% url 'blog:article_detail' article.pk %}">Читать</a>
+                        <a type="button" class="btn btn-outline-secondary" href="{% url 'blog:article_update' article.pk %}">Редактировать</a>
+                        <a type="button" class="btn btn-outline-secondary" href="{% url 'blog:article_delete' article.pk %}">Удалить</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+
+
+
+            </div><!-- /row -->
+
+{% endblock %}
