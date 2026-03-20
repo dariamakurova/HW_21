@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+{% load my_tags %}
+{% block content %}
+    <article class="blog-post">
+        {% if article.preview %}
+          <img src="{{ article.preview|media_filter }}"
+             class="card-img-top"
+             alt="{{ article.title }}">
+        {% else %}
+          <div class="thumb d-flex align-items-center justify-content-center">
+            <i class="bi bi-image fs-1 text-secondary"></i>
+          </div>
+        {% endif %}
+        <h2 class="display-5 link-body-emphasis mb-1">{{ article.title }}
+        </h2>
+        <p class="blog-post-meta">{{ article.created_at }} </p>
+        <p>{{ article.body }}</p>
+        </p>
+    </article>
+{% endblock %}
