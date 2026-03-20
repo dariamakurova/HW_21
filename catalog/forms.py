@@ -1,10 +1,23 @@
 from django.core.exceptions import ValidationError
+from django.db.models import BooleanField
 from django.forms import ModelForm
 
 from catalog.models import Product
 
+#Перечень запрещенных слов:
+RESTRICTED_WORDS = ['казино','криптовалюта','крипта','биржа','дешево','бесплатно',
+                    'обман','полиция','радар']
 
-class ProductForm(ModelForm):
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field, BooleanField):
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+class ProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
         exclude = ("created_at", "updated_at",)
@@ -21,17 +34,8 @@ class ProductForm(ModelForm):
         cleaned_data = super().clean()
         name = cleaned_data.get('name')
         description = cleaned_data.get('description')
-        restricted_words = ['казино',
-                            'криптовалюта',
-                            'крипта',
-                            'биржа',
-                            'дешево',
-                            'бесплатно',
-                            'обман',
-                            'полиция',
-                            'радар']
 
-        words_found = [word for word in restricted_words if word in name.lower() or word in description.lower()]
+        words_found = [word for word in RESTRICTED_WORDS if word in name.lower() or word in description.lower()]
 
         if words_found:
             raise ValidationError(f'Использованы недопустимые слова: {(', ').join(words_found)}')
