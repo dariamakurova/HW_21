@@ -6,7 +6,9 @@
             <div class="text-center page-title">
               <h1 class="display-5 fw-semibold mb-2">Каталог</h1>
             </div>
-
+            <div class="text-center page-title">
+              <a type="button" class="btn btn-primary" href="{% url 'catalog:product_create' %}">Новый продукт</a>
+            </div>
             <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
 
               {% for product in object_list %}
@@ -30,6 +32,9 @@
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group card-actions" role="group">
                         <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:product_info' product.pk %}">Подробнее</a>
+                        <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                        <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+
                       </div>
                       <small class="text-muted">{{ product.price }}</small>
                     </div>
