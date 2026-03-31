@@ -146,7 +146,7 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'dariamak.snake@yandex.ru'
+EMAIL_HOST_USER = 'dariamak.python@yandex.ru'
 EMAIL_HOST_PASSWORD = 'jkqrnupntzwvrrxt'
 
 SERVER_EMAIL = EMAIL_HOST_USER
