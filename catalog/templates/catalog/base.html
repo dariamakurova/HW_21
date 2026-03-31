@@ -44,7 +44,7 @@
         </button>
         {% if user.is_authenticated %}
         <ul class="dropdown-menu dropdown-menu-dark w-100">
-          <li><a class="dropdown-item" href="#">Профиль</a></li>
+          <li><a class="dropdown-item" href="{% url 'users:user_info' user.email %}">Профиль</a></li>
           <li><hr class="dropdown-divider"></li>
           <li>
             <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
