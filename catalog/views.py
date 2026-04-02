@@ -1,5 +1,5 @@
 from gettext import Catalog
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse_lazy, reverse
@@ -27,14 +27,14 @@ class ContactsView(TemplateView):
 def category_1(request):
     return render(request, 'catalog/category_1.html')
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:catalog')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('products:products_list')
@@ -42,7 +42,7 @@ class ProductUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('catalog:product_info', args=[self.kwargs.get('pk')])
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:catalog')
