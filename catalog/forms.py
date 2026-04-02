@@ -20,7 +20,7 @@ class StyleFormMixin:
 class ProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
-        exclude = ("created_at", "updated_at",)
+        exclude = ("created_at", "updated_at", "is_published")
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
@@ -47,3 +47,8 @@ class ProductForm(StyleFormMixin, ModelForm):
         if int(price) < 0:
             raise ValidationError('Цена продукта не может быть отрицательной')
         return price
+
+class ModeratorProductForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = ("is_published",)

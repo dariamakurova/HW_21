@@ -34,11 +34,16 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="Цена за покупку")
     created_at = models.DateField(verbose_name="Дата создания", auto_now=True)
     updated_at = models.DateField(verbose_name="Дата последнего изменения", auto_now=True)
+    is_published = models.CharField(verbose_name="Статус публикации", choices=[("published", "опубликован"), ("unpublished", "не опубликован")], default="не опубликован")
 
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category", "price"]
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
+            ("can_delete_product", "Can delete product")
+        ]
 
     def __str__(self):
         return self.name

@@ -33,8 +33,9 @@
                       <div class="btn-group card-actions" role="group">
                         <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:product_info' product.pk %}">Подробнее</a>
                         <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                        {% if perms.catalog.can_delete_product %}
                         <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
-
+                        {% endif %}
                       </div>
                       <small class="text-muted">{{ product.price }}</small>
                     </div>

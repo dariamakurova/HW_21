@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ModeratorProductForm
 from catalog.models import Product
 
 
@@ -39,6 +39,11 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProductForm
     success_url = reverse_lazy('products:products_list')
 
+    def get_form_class(self):
+        if self.request.user.has_perm('catalog.can_unpublish_product'):
+            return ModeratorProductForm
+        return ProductForm
+
     def get_success_url(self):
         return reverse('catalog:product_info', args=[self.kwargs.get('pk')])
 
@@ -46,6 +51,7 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:catalog')
+    permission_required = 'catalog.can_delete_product'
 
 
 class ProductListView(ListView):
