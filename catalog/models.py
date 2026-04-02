@@ -1,6 +1,9 @@
 from datetime import datetime
 
 from django.db import models
+from django.db.models import ForeignKey
+
+from users.models import User
 
 
 # Create your models here.
@@ -35,6 +38,15 @@ class Product(models.Model):
     created_at = models.DateField(verbose_name="Дата создания", auto_now=True)
     updated_at = models.DateField(verbose_name="Дата последнего изменения", auto_now=True)
     is_published = models.CharField(verbose_name="Статус публикации", choices=[("published", "опубликован"), ("unpublished", "не опубликован")], default="не опубликован")
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="products",
+        null=True,
+        blank=True,
+        verbose_name="Владелец"
+    )
+
 
     class Meta:
         verbose_name = "Продукт"
