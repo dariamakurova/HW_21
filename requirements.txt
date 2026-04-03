@@ -24,6 +24,7 @@ pure_eval==0.2.3
 Pygments==2.19.2
 python-dotenv==1.2.1
 pytokens==0.4.1
+redis==7.4.0
 sqlparse==0.5.5
 stack-data==0.6.3
 traitlets==5.14.3
