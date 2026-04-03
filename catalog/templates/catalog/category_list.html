@@ -1,0 +1,49 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Заголовок -->
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-semibold">Категории</h1>
+        <p class="text-muted">Выберите категорию, чтобы посмотреть товары</p>
+    </div>
+
+    <!-- Список категорий -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        {% for category in object_list %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+
+                <!-- Иконка -->
+                <div class="d-flex align-items-center justify-content-center bg-light" style="height: 150px;">
+                    <i class="bi bi-folder fs-1 text-secondary"></i>
+                </div>
+
+                <!-- Контент -->
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ category.name }}</h5>
+                    <p class="card-text text-muted">
+                        {{ category.description|truncatechars:80 }}
+                    </p>
+                </div>
+
+                <!-- Кнопка -->
+                <div class="card-footer bg-white border-0 text-center">
+                    <a href="{% url 'catalog:products_by_category' category.pk %}"
+                       class="btn btn-outline-primary">
+                        Смотреть товары
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+            <p class="text-center">Категории отсутствуют</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
