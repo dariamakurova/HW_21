@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ModeratorProductForm
 from catalog.models import Product
 
 
@@ -33,11 +33,25 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:catalog')
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('products:products_list')
+    raise_exception = True
+
+    def get_queryset(self):
+        if self.request.user.has_perm('catalog.can_unpublish_product'):
+            return Product.objects.all()
+        return Product.objects.filter(owner=self.request.user)
+
+    def get_form_class(self):
+        if self.request.user.has_perm('catalog.can_unpublish_product'):
+            return ModeratorProductForm
+        return ProductForm
 
     def get_success_url(self):
         return reverse('catalog:product_info', args=[self.kwargs.get('pk')])
@@ -45,8 +59,16 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
-    success_url = reverse_lazy('catalog:catalog')
+    raise_exception = True
 
+    def get_queryset(self):
+        # Владелец может удалять только свои товары, обладатель права can_delete_product - все
+        if self.request.user.has_perm('catalog.can_delete_product'):
+            return Product.objects.all()
+        return Product.objects.filter(owner=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy('catalog:catalog')
 
 class ProductListView(ListView):
     model = Product

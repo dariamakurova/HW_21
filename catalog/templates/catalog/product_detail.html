@@ -30,6 +30,11 @@
             <p class="card-text">
             Изменен: {{ object.updated_at }}
           </p>
+          {% if perms.catalog.can_unpublish_product%}
+          <p class="card-text">
+            Статус публикации: {{ object.is_published }}
+          </p>
+          {% endif %}
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group card-actions" role="group">
               <a type="button" class="btn btn-outline-secondary" href="{% url 'catalog:catalog' %}">Назад в каталог</a>
