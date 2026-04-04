@@ -6,7 +6,8 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm, ModeratorProductForm
-from catalog.models import Product
+from catalog.models import Product, Category
+from catalog.services import get_products_from_cache, ProductService
 
 
 def home(request):
@@ -73,6 +74,20 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 class ProductListView(ListView):
     model = Product
 
+    def get_queryset(self):
+        return get_products_from_cache()
+
+class ProductListViewByCategory(ListView):
+    model = Product
+    template_name = 'catalog/products_by_category.html'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('pk')
+        return ProductService.get_products_by_category(category_id)
 
 class ProductDetailView(DetailView):
     model = Product
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'catalog/category_list.html'
